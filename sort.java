@@ -4,7 +4,9 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class Sort<T>{
+public class Sort{
+	ArrayList<Assignment> assignmentList = new ArrayList<Assignment>();
+	ArrayList<Dependency> dependencyList = new ArrayList<Dependency>();
 	
 	Hashtable<Node, ArrayList<Node>> adjacentNodes = new Hashtable<Node, ArrayList<Node>>();
 	ArrayList<Node> nodes = new ArrayList<Node>();
@@ -13,28 +15,26 @@ public class Sort<T>{
 	 * All the code for setting up the graph
 	 */
 	public Sort(){}
+
 	
-	public boolean addVertex(Node vertex){
-		if(adjacenctNodes.contains(vertex)){
-			return false;
+	public void addVertex(Node vertex){
+		if(adjacentNodes.contains(vertex)){
+			return; 
 		}
-		else {
-			adjacencyList.put(vertex, new Node<>(vertex));
-			return true;
+		else{
+			adjacentNodes.put(vertex, new ArrayList<Node>());
+			nodes.add(vertex);
 		}
 	}
 
-	
 	//Helper method to link nodes
 	// Used to link begin end nodes in assignment specifically
-	public boolean addEdge(Node<T> node1, Node<T> node2, int duration){
-		Node<T> begin = getNode(node1);
-		Node<T> end = getNode(node2);
+	public boolean addEdge(Node node1, Node node2, int duration){
 		return node1.addEdge(node2, duration);
 	}
 	
 	//Helper method to link nodes (either begin or end) from 2 assignments
-	public boolean addAssignmentEdge(Node<T> assignment1, Node<T> assignment2){
+	public boolean addAssignmentEdge(Node assignment1, Node assignment2){
 		return addEdge(assignment1, assignment2, 0);
 	}
 	
@@ -49,15 +49,14 @@ public class Sort<T>{
 			addEdge(assignment.begin, assignment.end, assignment.duration);
 		}
 	}
-	
-	
+
 //	Function add dependency links: 
 //	input: list of requirements 
 //	output: void
 	public void addDependencyLinks(){
 //	pseudocode:
 //		for each dependency in the list of dependencies:
-		for(Dependency dependency : dependenciesList){
+		for(Dependency dependency : dependencyList){
 			switch (dependency.getDependencyType()){
 //			case 1: Begin-Begin
 			case BEGINBEGIN:
@@ -83,7 +82,26 @@ public class Sort<T>{
 	public void sort(){
 		LinkedList<Node> SortedAssignmentNodes = new LinkedList<Node>();
 		
-		
+		for(Node node: nodes){
+			if(!node.permanentChecked()){
+				visit(node);
+			}
+		}
+	}
+	
+	public void visit(Node node){
+		if(node.permanentChecked()){
+			return;
+		}
+		else if(node.temporaryChecked()){
+			System.out.println("Assignments are cyclical");
+		}
+		else{
+			node.setTemporaryChecked(true);
+			for(node.edges().){
+				
+			}
+		}
 	}
 
 	
