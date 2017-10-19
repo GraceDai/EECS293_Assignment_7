@@ -2,53 +2,63 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Node<T> {
+public class Node {
 
-    private T vertex;
+    private Node vertex;
 
-    private ArrayList<Edge<T>> edges;
+    private ArrayList<Edge> edges;
 
-    private Node<T> parent;
+    private Node parent;
+    
+    private int endTime;
 
     private boolean temporaryCheck;
     private boolean permanentCheck;
 
-    public Node(T vertex) {
+    public Node(Node vertex) {
         this.vertex = vertex;
         this.edges = new ArrayList<>();
     }
 
-    public T vertex() {
+    public Node vertex() {
         return vertex;
     }
+    
+    public void setEndTime(int endTime){
+    	this.endTime = endTime;
+    }
+    
+    public int getEndTime(){
+    	return endTime;
+    }
 
-    public boolean addEdge(Node<T> node, int weight) {
+    public boolean addEdge(Node node, int weight) {
         if (hasEdge(node)) {
             return false;
         }
-        Edge<T> newEdge = new Edge<>(this, node, weight);
+        Edge newEdge = new Edge(this, node, weight);
         return edges.add(newEdge);
     }
 
-    public boolean removeEdge(Node<T> node) {
-        Optional<Edge<T>> optional = findEdge(node);
+    public boolean removeEdge(Node node) {
+        Optional<Edge> optional = findEdge(node);
         if (optional.isPresent()) {
             return edges.remove(optional.get());
         }
         return false;
     }
 
-    public boolean hasEdge(Node<T> node) {
+    public boolean hasEdge(Node node) {
         return findEdge(node).isPresent();
     }
 
-    private Optional<Edge<T>> findEdge(Node<T> node) {
+    private Optional<Edge> findEdge(Node node) {
         return edges.stream()
                 .filter(edge -> edge.isBetween(this, node))
                 .findFirst();
     }
 
-    public List<Edge<T>> edges() {
+    public List<Edge> edges() {
         return edges;
     }
 
@@ -56,7 +66,7 @@ public class Node<T> {
         return edges.size();
     }
 
-    public Node<T> parent() {
+    public Node parent() {
         return parent;
     }
 
@@ -74,7 +84,7 @@ public class Node<T> {
     	this.permanentCheck = permanentCheck;
     }
 
-    public void setParent(Node<T> parent) {
+    public void setParent(Node parent) {
         this.parent = parent;
     }
 }

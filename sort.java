@@ -10,7 +10,7 @@ public class Sort{
 	
 	Hashtable<Node, ArrayList<Node>> adjacentNodes = new Hashtable<Node, ArrayList<Node>>();
 	ArrayList<Node> nodes = new ArrayList<Node>();
-	LinkedList<Node> sortedNodes;
+	LinkedList<Node> sortedAssignmentNodes;
 	/*
 	 * All the code for setting up the graph
 	 */
@@ -79,8 +79,7 @@ public class Sort{
 	}
 	
 	
-	public void sort(){
-		LinkedList<Node> SortedAssignmentNodes = new LinkedList<Node>();
+	public void sort() throws Exception{
 		
 		for(Node node: nodes){
 			if(!node.permanentChecked()){
@@ -94,7 +93,7 @@ public class Sort{
 			return;
 		}
 		else if(node.temporaryChecked()){
-			throw new Exception("The assignments are cyclical")
+			throw new Exception("The assignments are cyclical");
 		}
 		else{
 			node.setTemporaryChecked(true);
@@ -102,20 +101,48 @@ public class Sort{
 				visit(adjacentNode);
 			}
 			node.setPermanentChecked(true);
+			sortedAssignmentNodes.addFirst(node);
 		}
+		
 	}
 
 	
 	
 
 //	Function check duration: 
-//	for each node in SortedAssignments 
-//		check each edge and get maximum 
-//		set node's integer to be the maximum
-//
+	public int findMaxDuration(){
+		setDuration();
+		int maxOverallDuration = sortedAssignmentNodes.get(0).getEndTime(); 
+		for(Node node : sortedAssignmentNodes){
+			int duration = node.getEndTime();
+			if(duration > maxOverallDuration){
+				maxOverallDuration = duration;
+			}
+		}
+		
+		
+		return maxOverallDuration;
+	}
+
+
+
 //	get first node in sorted assignments and get integer duration	
 //	
+	public void setDuration(){
+//		for each node in SortedAssignments
+//		check each edge and get maximum 
+		for(Node node : sortedAssignmentNodes){
+			int maxEdgeDuration = 0;
+			for(Edge edge : node.edges()){
+				if(edge.getDuration() > maxEdgeDuration){
+//					set node's integer to be the maximum
+					maxEdgeDuration = edge.getDuration();
+					node.setEndTime(maxEdgeDuration);
+				}
+			}
+		}
 
+	}
 	
 	
 }
