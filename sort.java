@@ -5,6 +5,11 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class Sort{	
+	//Need input of arrayList of assignments for method connectBeginEndNodes
+	////ArrayList<Assignment> assignmentList
+	//Need input of arrayList of dependenies for method addDependencyConnections
+	
+	
 	Hashtable<Node, ArrayList<Node>> adjacentNodes = new Hashtable<Node, ArrayList<Node>>();
 	ArrayList<Node> nodes = new ArrayList<Node>();
 	LinkedList<Node> sortedAssignmentNodes;
@@ -36,6 +41,17 @@ public class Sort{
 		return addEdge(assignment1, assignment2, 0);
 	}
 	
+	//Method to add nodes to the graph for all the nodes in the assignment list
+	public void addAssignmentstoGraph(ArrayList<Assignment> assignmentList){
+		for(Assignment assignment : assignmentList){
+			addVertex(assignment.begin);
+			addVertex(assignment.end);
+		}
+	}
+	
+	/*
+	 * ACTUAL ALGORITHM
+	 */
 	
 	//Procedure: link assignment
 	//input: list of assignment
