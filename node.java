@@ -6,7 +6,7 @@ public class Node<T> {
 
     private T vertex;
 
-    private List<Edge<T>> edges;
+    private ArrayList<Edge<T>> edges;
 
     private Node<T> parent;
 
@@ -60,7 +60,7 @@ public class Node<T> {
         return parent;
     }
 
-    public boolean temporaryCheck() {
+    public boolean temporaryChecked() {
         return temporaryCheck;
     }
     public boolean permanentChecked(){

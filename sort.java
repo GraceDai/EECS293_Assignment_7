@@ -89,18 +89,19 @@ public class Sort{
 		}
 	}
 	
-	public void visit(Node node){
+	public void visit(Node node) throws Exception{
 		if(node.permanentChecked()){
 			return;
 		}
 		else if(node.temporaryChecked()){
-			System.out.println("Assignments are cyclical");
+			throw new Exception("The assignments are cyclical")
 		}
 		else{
 			node.setTemporaryChecked(true);
-			for(node.edges().){
-				
+			for(Node adjacentNode : adjacentNodes.get(node)){
+				visit(adjacentNode);
 			}
+			node.setPermanentChecked(true);
 		}
 	}
 

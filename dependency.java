@@ -6,14 +6,12 @@ public class Dependency {
 	}
 	
 	//Field
-	public int duration;
 	public Assignment fromAssignment, toAssignment;
 	public final DependencyType dependencyType;
 	
 	
 	//Constructor
-	public Dependency(int duration, Assignment fromAssignment, Assignment toAssignment, DependencyType dependencyType){
-		this.duration = duration;
+	public Dependency(Assignment fromAssignment, Assignment toAssignment, DependencyType dependencyType){
 		this.fromAssignment = fromAssignment;
 		this.toAssignment = toAssignment;
 		this.dependencyType = dependencyType;
