@@ -121,10 +121,12 @@ public class Sort{
 	
 	
 
-//	Function check duration: 
+	//Function check duration: 		
 	public int findMaxDuration(){
 		setDuration();
+		//Get first node in sorted assignments and get integer duration
 		int maxOverallDuration = sortedAssignmentNodes.get(0).getEndTime(); 
+		//Find max duration in the list of sorted assignments
 		for(Node node : sortedAssignmentNodes){
 			int duration = node.getEndTime();
 			if(duration > maxOverallDuration){
@@ -137,17 +139,15 @@ public class Sort{
 	}
 
 
-
-//	get first node in sorted assignments and get integer duration	
-//	
+	
 	public void setDuration(){
-//		for each node in SortedAssignments
-//		check each edge and get maximum 
+		//for each node in SortedAssignments 
 		for(Node node : sortedAssignmentNodes){
 			int maxEdgeDuration = 0;
-			for(Edge edge : node.edges()){
+			//check each edge and get maximum
+			for(Edge edge : node.getEdges()){
 				if(edge.getDuration() > maxEdgeDuration){
-//					set node's integer to be the maximum
+					//set node's integer to be the maximum
 					maxEdgeDuration = edge.getDuration();
 					node.setEndTime(maxEdgeDuration);
 				}

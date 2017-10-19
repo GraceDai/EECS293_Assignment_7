@@ -1,7 +1,6 @@
 
 public class Dependency {
 	
-	
 	//Enum for the type of dependency 
 	public enum DependencyType {
 		BEGINBEGIN, BEGINEND, ENDBEGIN, ENDEND
@@ -14,17 +13,16 @@ public class Dependency {
 	
 	
 	//Constructor
-	public Dependency(Assignment fromAssignment, Assignment toAssignment, DependencyType dependencyType){
+	public Dependency(Assignment fromAssignment, DependencyType dependencyType, Assignment toAssignment){
 		this.fromAssignment = fromAssignment;
-		this.toAssignment = toAssignment;
 		this.dependencyType = dependencyType;
+		this.toAssignment = toAssignment;
 	}
 	
 	//Getter
 	public DependencyType getDependencyType(){
 		return dependencyType;
 	}
-	
-	//Method to add dependencies
+
 	
 }

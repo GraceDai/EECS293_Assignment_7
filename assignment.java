@@ -25,6 +25,4 @@ public class Assignment {
 		return end;
 	}
 	
-	//Method to add assignments 
-	
 }

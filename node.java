@@ -4,23 +4,22 @@ import java.util.Optional;
 
 public class Node {
 
+	//Field
     private Node vertex;
-
     private ArrayList<Edge> edges;
-
-    private Node parent;
-    
+    private Node parent;   
     private int endTime;
-
     private boolean temporaryCheck;
     private boolean permanentCheck;
 
+    //Constructor
     public Node(Node vertex) {
         this.vertex = vertex;
         this.edges = new ArrayList<>();
     }
 
-    public Node vertex() {
+    //Gettesr and setters
+    public Node getVertex() {
         return vertex;
     }
     
@@ -32,6 +31,7 @@ public class Node {
     	return endTime;
     }
 
+    //Add edges to node
     public boolean addEdge(Node node, int weight) {
         if (hasEdge(node)) {
             return false;
@@ -40,6 +40,7 @@ public class Node {
         return edges.add(newEdge);
     }
 
+    //Remove edges from graph
     public boolean removeEdge(Node node) {
         Optional<Edge> optional = findEdge(node);
         if (optional.isPresent()) {
@@ -47,29 +48,35 @@ public class Node {
         }
         return false;
     }
-
+    
+    //Check if node has any edges 
     public boolean hasEdge(Node node) {
         return findEdge(node).isPresent();
     }
 
+    //Find the edges of node
     private Optional<Edge> findEdge(Node node) {
         return edges.stream()
                 .filter(edge -> edge.isBetween(this, node))
                 .findFirst();
     }
 
-    public List<Edge> edges() {
+    //List of edges 
+    public List<Edge> getEdges() {
         return edges;
     }
 
+    //Get how many edges there are
     public int getEdgeCount() {
         return edges.size();
     }
 
-    public Node parent() {
+    //Get the parent of a node
+    public Node getParent() {
         return parent;
     }
 
+    //More getters setters for boolean check marks 
     public boolean isTemporaryChecked() {
         return temporaryCheck;
     }
@@ -84,6 +91,7 @@ public class Node {
     	this.permanentCheck = permanentCheck;
     }
 
+    //Set the node's parent to be 
     public void setParent(Node parent) {
         this.parent = parent;
     }
