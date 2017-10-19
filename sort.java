@@ -8,6 +8,7 @@ public class Sort{
 	Hashtable<Node, ArrayList<Node>> adjacentNodes = new Hashtable<Node, ArrayList<Node>>();
 	ArrayList<Node> nodes = new ArrayList<Node>();
 	LinkedList<Node> sortedAssignmentNodes;
+	
 	/*
 	 * All the code for setting up the graph
 	 */

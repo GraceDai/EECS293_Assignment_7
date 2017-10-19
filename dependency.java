@@ -1,5 +1,6 @@
 
 public class Dependency {
+	//Int duration-- was in my pseudocode but would've been repeated code here so I commented it out
 	
 	//Enum for the type of dependency 
 	public enum DependencyType {

@@ -3,6 +3,8 @@ public class Edge {
 	//Field
     private Node node1;
     private Node node2;
+    
+    //The duration passed in from assignment 
     private int duration;
 
     //Constructor
