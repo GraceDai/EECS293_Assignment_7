@@ -70,10 +70,10 @@ public class Node {
         return parent;
     }
 
-    public boolean temporaryChecked() {
+    public boolean isTemporaryChecked() {
         return temporaryCheck;
     }
-    public boolean permanentChecked(){
+    public boolean isPermanentChecked(){
     	return permanentCheck;
     }
 
