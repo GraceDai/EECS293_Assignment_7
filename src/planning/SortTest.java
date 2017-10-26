@@ -10,13 +10,11 @@ public class SortTest {
 	ArrayList<Dependency> testDependencyList = new ArrayList<>();
 	
 	@Test
-	public void creating_new_assignments_test() {	
+	public void creating_new_assignments_test(){	
 		
 		assertTrue(true);
 		
 	}
-	
-
 	
 	
 

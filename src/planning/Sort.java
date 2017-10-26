@@ -1,53 +1,34 @@
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class Sort{	
 	//Need input of arrayList of assignments for method connectBeginEndNodes
 	////ArrayList<Assignment> assignmentList
 	//Need input of arrayList of dependenies for method addDependencyConnections
 	
+
+	List<Node> nodes = new ArrayList<Node>();
 	
-	Hashtable<Node, ArrayList<Node>> adjacentNodes = new Hashtable<Node, ArrayList<Node>>();
-	ArrayList<Node> nodes = new ArrayList<Node>();
 	LinkedList<Node> sortedAssignmentNodes;
-	
 	/*
 	 * All the code for setting up the graph
 	 */
 	public Sort(){}
-
-	//Place vertexes onto graph 
-	public void addVertex(Node vertex){
-		if(adjacentNodes.contains(vertex)){
-			return; 
-		}
-		else{
-			adjacentNodes.put(vertex, new ArrayList<Node>());
-			nodes.add(vertex);
-		}
-	}
-
-	//Helper method to link nodes
-	//By itself used to link the begin and end nodes of one assignment
-	public boolean addEdge(Node node1, Node node2, int duration){
-		return node1.addEdge(node2, duration);
-	}
 	
-	//Helper method to link nodes (either begin or end) from two assignments
-	public boolean addAssignmentEdge(Node assignment1, Node assignment2){
-		return addEdge(assignment1, assignment2, 0);
+	public int scheduleTasks(List<Assignment> assignmentList, List<Dependency> dependencyList) throws Exception{
+		addAssignmentstoGraph(assignmentList);
+		connectBeginEndNodes(assignmentList);
+		addDependencyConnections(dependencyList);
+		sort();
+		int duration = findMaxDuration();
+		
+		return duration;
 	}
-	
-	//Method to add nodes to the graph for all the nodes in the assignment list
-	public void addAssignmentstoGraph(ArrayList<Assignment> assignmentList){
-		for(Assignment assignment : assignmentList){
-			addVertex(assignment.begin);
-			addVertex(assignment.end);
-		}
-	}
+
 	
 	/*
 	 * ACTUAL ALGORITHM
@@ -57,7 +38,7 @@ public class Sort{
 	//input: list of assignment
 	//output: void
 	//method links the begin and end nodes of an assignment with it's duration
-	public void connectBeginEndNodes(ArrayList<Assignment> assignmentList){
+	public void connectBeginEndNodes(List<Assignment> assignmentList){
 		//for each assignment in the list of assignments
 		for(Assignment assignment : assignmentList){
 			//make new dependency with the begin node, end node and duration
@@ -69,10 +50,11 @@ public class Sort{
 	//input: list of requirements 
 	//output: void
 	//method connects the beginning and end nodes based off of dependency requirement
-	public void addDependencyConnections(ArrayList<Dependency> dependencyList){
+	public void addDependencyConnections(List<Dependency> dependencyList){
 		//for each dependency in the list of dependencies:
 		for(Dependency dependency : dependencyList){
 			switch (dependency.getDependencyType()){
+			
 			//case 1: Begin-Begin
 			case BEGINBEGIN:
 				//Make new edge with the depenedency.fromAssignment begin node to the dependency.toAssignment begin node with duration 0.
@@ -93,6 +75,8 @@ public class Sort{
 		}
 	}
 	
+	
+	
 	//Topological sort methods
 	//input: nodes list (not assignment list)
 	//output: sorted list of assignments 
@@ -100,7 +84,7 @@ public class Sort{
 		//for each node in my list of nodes
 		for(Node node: nodes){
 			//check boolean checked on node n
-			if(!node.isPermanentChecked()){
+			if(!node.isVisited()){
 				//if not checked, use visit
 				visit(node);
 			}
@@ -110,25 +94,25 @@ public class Sort{
 	//visit method for the topological sort
 	public void visit(Node node) throws Exception{
 		//if n is permanentChecked then return
-		if(node.isPermanentChecked()){
+		if(node.isVisited()){
 			return;
 		}
 		//if n  is temporaryChecked then stop 
-		else if(node.isTemporaryChecked()){
+		else if(node.isVisiting()){
 			//print that is cyclical (used an exception to print)  
 			throw new Exception("The assignments are cyclical");
 		}
 		//if not marked then 
 		else{
 			//temporaryCheck n
-			node.setTemporaryChecked(true);
+			node.setVisiting(true);
 			//for each node n is linked to 
-			for(Node adjacentNode : adjacentNodes.get(node)){
+			for(Edge adjacentOutgoingNode : node.getOutgoingEdges()){
 				//visit(n)
-				visit(adjacentNode);
+				visit(adjacentOutgoingNode.getToNode());
 			}
 			//permanentCheck n 
-			node.setPermanentChecked(true);
+			node.setVisited(true);
 			//add n to the front of SortedAssignments 
 			sortedAssignmentNodes.addFirst(node);
 		}
@@ -146,12 +130,8 @@ public class Sort{
 		//Find max duration in the list of sorted assignments
 		for(Node node : sortedAssignmentNodes){
 			int duration = node.getEndTime();
-			if(duration > maxOverallDuration){
-				maxOverallDuration = duration;
-			}
+			maxOverallDuration = Math.max(duration, maxOverallDuration);
 		}
-		
-		
 		return maxOverallDuration;
 	}
 
@@ -162,16 +142,39 @@ public class Sort{
 		for(Node node : sortedAssignmentNodes){
 			int maxEdgeDuration = 0;
 			//check each edge and get maximum
-			for(Edge edge : node.getEdges()){
-				if(edge.getDuration() > maxEdgeDuration){
-					//set node's integer to be the maximum
-					maxEdgeDuration = edge.getDuration();
-					node.setEndTime(maxEdgeDuration);
-				}
+			for(Edge edge : node.getIncomingEdges()){
+				maxEdgeDuration = Math.max(edge.getFromNode().getEndTime() + edge.getDuration(), maxEdgeDuration);
 			}
+			
+			node.setEndTime(maxEdgeDuration);
 		}
 
 	}
+
+	/*
+	 * Helper methods for my algorithm
+	 */	
+	//Helper method to link nodes
+	//By itself used to link the begin and end nodes of one assignment
+	public void addEdge(Node node1, Node node2, int duration){
+		Edge edge = new Edge(node1, node2, duration);
+		
+		node1.addOutgoingEdge(edge);	
+		node2.addIncomingEdge(edge);
+	}
+
 	
+	//Helper method to link nodes (either begin or end) from two assignments
+	public void addAssignmentEdge(Node assignment1, Node assignment2){
+		addEdge(assignment1, assignment2, 0);
+	}
+	
+	//Method to add nodes to the graph for all the nodes in the assignment list
+	public void addAssignmentstoGraph(List<Assignment> assignmentList){
+		for(Assignment assignment : assignmentList){
+			nodes.add(assignment.begin);
+			nodes.add(assignment.end);
+		}
+	}
 	
 }

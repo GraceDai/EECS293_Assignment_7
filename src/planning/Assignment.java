@@ -6,10 +6,8 @@ public class Assignment {
 	public Node end;
 	
 	//Constructor
-	public Assignment(int duration, Node begin, Node end){
+	public Assignment(int duration){
 		this.duration = duration;
-		this.begin = begin;
-		this.end = end;
 	}
 	
 	//Getters

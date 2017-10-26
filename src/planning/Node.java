@@ -6,16 +6,20 @@ public class Node {
 
 	//Field
     private Node vertex;
-    private ArrayList<Edge> edges;
+    private ArrayList<Edge> incomingEdges;
+    private ArrayList<Edge> outgoingEdges;
     private Node parent;   
     private int endTime;
     private boolean temporaryCheck;
     private boolean permanentCheck;
+    
+    
 
     //Constructor
     public Node(Node vertex) {
         this.vertex = vertex;
-        this.edges = new ArrayList<>();
+        this.incomingEdges = new ArrayList<>();
+        this.outgoingEdges = new ArrayList<>();
     }
 
     //Gettesr and setters
@@ -32,67 +36,38 @@ public class Node {
     }
 
     //Add edges to node
-    public boolean addEdge(Node node, int weight) {
-        if (hasEdge(node)) {
-            return false;
-        }
-        Edge newEdge = new Edge(this, node, weight);
-        return edges.add(newEdge);
-    }
-
-    //Remove edges from graph
-    public boolean removeEdge(Node node) {
-        Optional<Edge> optional = findEdge(node);
-        if (optional.isPresent()) {
-            return edges.remove(optional.get());
-        }
-        return false;
+    public boolean addIncomingEdge(Edge edge) {
+        return incomingEdges.add(edge);
     }
     
-    //Check if node has any edges 
-    public boolean hasEdge(Node node) {
-        return findEdge(node).isPresent();
+    public boolean addOutgoingEdge(Edge edge) {
+        return outgoingEdges.add(edge);
     }
 
-    //Find the edges of node
-    private Optional<Edge> findEdge(Node node) {
-        return edges.stream()
-                .filter(edge -> edge.isBetween(this, node))
-                .findFirst();
-    }
 
     //List of edges 
-    public List<Edge> getEdges() {
-        return edges;
+    public List<Edge> getIncomingEdges(){
+        return incomingEdges;
+    }
+    
+    public List<Edge> getOutgoingEdges(){
+    	return outgoingEdges;
     }
 
-    //Get how many edges there are
-    public int getEdgeCount() {
-        return edges.size();
-    }
-
-    //Get the parent of a node
-    public Node getParent() {
-        return parent;
-    }
 
     //More getters setters for boolean check marks 
-    public boolean isTemporaryChecked() {
+    public boolean isVisiting() {
         return temporaryCheck;
     }
-    public boolean isPermanentChecked(){
+    public boolean isVisited(){
     	return permanentCheck;
     }
 
-    public void setTemporaryChecked(boolean temporaryCheck){
+    public void setVisiting(boolean temporaryCheck){
         this.temporaryCheck = temporaryCheck;
     }
-    public void setPermanentChecked(boolean permanentCheck){
+    public void setVisited(boolean permanentCheck){
     	this.permanentCheck = permanentCheck;
     }
 
-    //Set the node's parent to be 
-    public void setParent(Node parent) {
-        this.parent = parent;
-    }
 }

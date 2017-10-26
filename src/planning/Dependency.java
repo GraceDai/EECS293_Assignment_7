@@ -4,7 +4,7 @@ public class Dependency {
 	
 	//Enum for the type of dependency 
 	public enum DependencyType {
-		BEGINBEGIN, BEGINEND, ENDBEGIN, ENDEND
+		BEGINBEGIN, BEGINEND, ENDBEGIN, ENDEND;
 	}
 	
 	//Field
@@ -25,5 +25,4 @@ public class Dependency {
 		return dependencyType;
 	}
 
-	
 }
