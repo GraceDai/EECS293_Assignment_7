@@ -16,13 +16,12 @@ public class Node {
     
 
     //Constructor
-    public Node(Node vertex) {
-        this.vertex = vertex;
+    public Node() {
         this.incomingEdges = new ArrayList<>();
         this.outgoingEdges = new ArrayList<>();
     }
 
-    //Gettesr and setters
+    //Getters and setters
     public Node getVertex() {
         return vertex;
     }

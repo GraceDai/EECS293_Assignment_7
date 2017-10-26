@@ -147,8 +147,8 @@ public class Sort{
 
 	
 	//Helper method to link nodes (either begin or end) from two assignments
-	public static void addAssignmentEdge(Node assignment1, Node assignment2){
-		addEdge(assignment1, assignment2, 0);
+	public static void addAssignmentEdge(Node fromAssignment, Node toAssignment){
+		addEdge(fromAssignment, toAssignment, 0);
 	}
 	
 	//Method to add nodes to the graph for all the nodes in the assignment list
