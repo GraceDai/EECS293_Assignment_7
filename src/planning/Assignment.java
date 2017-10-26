@@ -8,6 +8,8 @@ public class Assignment {
 	//Constructor
 	public Assignment(int duration){
 		this.duration = duration;
+		this.begin = new Node();
+		this.end = new Node();
 	}
 	
 	//Getters
