@@ -53,25 +53,7 @@ public class Sort{
 	public void addDependencyConnections(List<Dependency> dependencyList){
 		//for each dependency in the list of dependencies:
 		for(Dependency dependency : dependencyList){
-			switch (dependency.getDependencyType()){
-			
-			//case 1: Begin-Begin
-			case BEGINBEGIN:
-				//Make new edge with the depenedency.fromAssignment begin node to the dependency.toAssignment begin node with duration 0.
-				addAssignmentEdge(dependency.fromAssignment.begin, dependency.toAssignment.begin);
-			//case 2: Begin-End
-			case BEGINEND:
-				//Make new edge with the dependency.fromAssignment end node to the dependency.toAssignment begin node with duration 0.
-				addAssignmentEdge(dependency.fromAssignment.end, dependency.toAssignment.begin);
-			//case 3: End-End
-			case ENDEND:
-				//Make new edge with the dependency.fromAssignment end node to the dependency.fromAssignment end node 
-				addAssignmentEdge(dependency.fromAssignment.end, dependency.toAssignment.end);
-			//default 4: End-Begin
-			default: 
-				//Make new edge with the dependency.toAssignment end node to the dependency.fromAssignment begin node
-				addAssignmentEdge(dependency.toAssignment.end, dependency.fromAssignment.begin);
-			}
+			dependency.getDependencyType().addDependencyEdge(dependency);
 		}
 	}
 	
@@ -156,7 +138,7 @@ public class Sort{
 	 */	
 	//Helper method to link nodes
 	//By itself used to link the begin and end nodes of one assignment
-	public void addEdge(Node node1, Node node2, int duration){
+	public static void addEdge(Node node1, Node node2, int duration){
 		Edge edge = new Edge(node1, node2, duration);
 		
 		node1.addOutgoingEdge(edge);	
@@ -165,7 +147,7 @@ public class Sort{
 
 	
 	//Helper method to link nodes (either begin or end) from two assignments
-	public void addAssignmentEdge(Node assignment1, Node assignment2){
+	public static void addAssignmentEdge(Node assignment1, Node assignment2){
 		addEdge(assignment1, assignment2, 0);
 	}
 	

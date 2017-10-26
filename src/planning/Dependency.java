@@ -4,7 +4,26 @@ public class Dependency {
 	
 	//Enum for the type of dependency 
 	public enum DependencyType {
-		BEGINBEGIN, BEGINEND, ENDBEGIN, ENDEND;
+		BEGINBEGIN{
+			public void addDependencyEdge(Dependency dependency){
+				Sort.addAssignmentEdge(dependency.fromAssignment.begin, dependency.toAssignment.begin);
+			}
+		}, BEGINEND{
+			public void addDependencyEdge(Dependency dependency){
+				Sort.addAssignmentEdge(dependency.fromAssignment.begin, dependency.toAssignment.end);
+			}
+		}, ENDBEGIN{
+			public void addDependencyEdge(Dependency dependency){
+				Sort.addAssignmentEdge(dependency.fromAssignment.end, dependency.toAssignment.begin);
+			}
+		}, ENDEND{
+			public void addDependencyEdge(Dependency dependency){
+				Sort.addAssignmentEdge(dependency.fromAssignment.end, dependency.toAssignment.end);
+			}
+		};
+		
+		public abstract void addDependencyEdge(Dependency dependency);
+		
 	}
 	
 	//Field
