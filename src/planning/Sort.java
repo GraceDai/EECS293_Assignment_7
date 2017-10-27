@@ -13,11 +13,13 @@ public class Sort{
 
 	List<Node> nodes = new ArrayList<Node>();
 	
-	LinkedList<Node> sortedAssignmentNodes;
+	List<Node> sortedAssignmentNodes;
 	/*
 	 * All the code for setting up the graph
 	 */
-	public Sort(){}
+	public Sort(){
+		sortedAssignmentNodes = new ArrayList<>();
+	}
 	
 	public int scheduleTasks(List<Assignment> assignmentList, List<Dependency> dependencyList) throws Exception{
 		addAssignmentstoGraph(assignmentList);
@@ -96,7 +98,7 @@ public class Sort{
 			//permanentCheck n 
 			node.setVisited(true);
 			//add n to the front of SortedAssignments 
-			sortedAssignmentNodes.addFirst(node);
+			sortedAssignmentNodes.add(0, node);
 		}
 		
 	}
@@ -108,7 +110,7 @@ public class Sort{
 	public int findMaxDuration(){
 		setDuration();
 		//Get first node in sorted assignments and get integer duration
-		int maxOverallDuration = sortedAssignmentNodes.get(0).getEndTime(); 
+		int maxOverallDuration = 0; 
 		//Find max duration in the list of sorted assignments
 		for(Node node : sortedAssignmentNodes){
 			int duration = node.getEndTime();
