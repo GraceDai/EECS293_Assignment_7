@@ -96,8 +96,6 @@ public class SortTest {
 		List<Assignment> assignmentList = new ArrayList<Assignment>();
 	
 		sort.connectBeginEndNodes(assignmentList);
-	
-		
 	}
 	
 	//Assignment list is not empty
@@ -234,6 +232,10 @@ public class SortTest {
 	}
 	
 	/*
+	 * setDuration
+	 */
+	
+	/*
 	 * addAssignmentsToGraph
 	 */
 	//No assignments
@@ -242,9 +244,24 @@ public class SortTest {
 		List<Assignment> assignmentList = new ArrayList<>();
 		
 		sort.addAssignmentstoGraph(assignmentList);
-		
-		
+	
 		assertTrue(sort.getNodes().isEmpty());
+	}
+	
+	//One assignment
+	@Test 
+	public void test_one_assignment(){
+		List<Assignment> assignmentList = new ArrayList<>(); 
+		
+		Assignment a = new Assignment(3);
+	
+		assignmentList.add(a);
+		
+		sort.addAssignmentstoGraph(assignmentList);
+		
+		//There should be two nodes for each assignment so for one assignment
+		//there should only be 2 nodes in the list
+		assertEquals(2, sort.getNodes().size());
 	}
 	
 	//A couple assignments 
@@ -252,17 +269,19 @@ public class SortTest {
 	public void test_a_couple_assignments(){
 		List<Assignment> assignmentList = new ArrayList<>();
 		
-		Assignment one = new Assignment(3);
-		Assignment two = new Assignment(3);
-		Assignment three = new Assignment(3);
+		Assignment a = new Assignment(3);
+		Assignment b = new Assignment(3);
+		Assignment c = new Assignment(3);
 		
-		assignmentList.add(one);
-		assignmentList.add(two);
-		assignmentList.add(three);
+		assignmentList.add(a);
+		assignmentList.add(b);
+		assignmentList.add(c);
 		
 		sort.addAssignmentstoGraph(assignmentList);
 		
 		assertEquals(6, sort.getNodes().size());
 	}
+	
+	
 	
 }
