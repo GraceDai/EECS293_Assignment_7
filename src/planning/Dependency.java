@@ -6,19 +6,19 @@ public class Dependency {
 	public enum DependencyType {
 		BEGINBEGIN{
 			public void addDependencyEdge(Dependency dependency){
-				Sort.addAssignmentEdge(dependency.fromAssignment.begin, dependency.toAssignment.begin);
+				Sort.addEdge(dependency.fromAssignment.begin, dependency.toAssignment.begin, 0);
 			}
 		}, BEGINEND{
 			public void addDependencyEdge(Dependency dependency){
-				Sort.addAssignmentEdge(dependency.fromAssignment.begin, dependency.toAssignment.end);
+				Sort.addEdge(dependency.fromAssignment.begin, dependency.toAssignment.end, 0);
 			}
 		}, ENDBEGIN{
 			public void addDependencyEdge(Dependency dependency){
-				Sort.addAssignmentEdge(dependency.fromAssignment.end, dependency.toAssignment.begin);
+				Sort.addEdge(dependency.fromAssignment.end, dependency.toAssignment.begin, 0);
 			}
 		}, ENDEND{
 			public void addDependencyEdge(Dependency dependency){
-				Sort.addAssignmentEdge(dependency.fromAssignment.end, dependency.toAssignment.end);
+				Sort.addEdge(dependency.fromAssignment.end, dependency.toAssignment.end, 0);
 			}
 		};
 		

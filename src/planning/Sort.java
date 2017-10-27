@@ -11,9 +11,19 @@ public class Sort{
 	//Need input of arrayList of dependenies for method addDependencyConnections
 	
 
-	List<Node> nodes = new ArrayList<Node>();
+	private List<Node> nodes = new ArrayList<Node>();
 	
-	List<Node> sortedAssignmentNodes;
+	private List<Node> sortedAssignmentNodes;
+	
+	
+	public List<Node> getNodes(){
+		return nodes;
+	}
+	
+	public List<Node> sortedAssignmentNodes(){
+		return sortedAssignmentNodes;
+	}
+	
 	/*
 	 * All the code for setting up the graph
 	 */
@@ -140,17 +150,11 @@ public class Sort{
 	 */	
 	//Helper method to link nodes
 	//By itself used to link the begin and end nodes of one assignment
-	public static void addEdge(Node node1, Node node2, int duration){
-		Edge edge = new Edge(node1, node2, duration);
+	public static void addEdge(Node fromNode, Node toNode, int duration){
+		Edge edge = new Edge(fromNode, toNode, duration);
 		
-		node1.addOutgoingEdge(edge);	
-		node2.addIncomingEdge(edge);
-	}
-
-	
-	//Helper method to link nodes (either begin or end) from two assignments
-	public static void addAssignmentEdge(Node fromAssignment, Node toAssignment){
-		addEdge(fromAssignment, toAssignment, 0);
+		fromNode.addOutgoingEdge(edge);	
+		toNode.addIncomingEdge(edge);
 	}
 	
 	//Method to add nodes to the graph for all the nodes in the assignment list
