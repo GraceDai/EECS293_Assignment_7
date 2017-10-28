@@ -90,17 +90,94 @@ public class SortTest {
 	/*
 	 * connectBeginEndNodes tests
 	 */
-	//Assignment list is empty 
+	//Test 1: assignment list is empty 
 	@Test 
 	public void test_empty_assignmentList(){	
 		List<Assignment> assignmentList = new ArrayList<Assignment>();
 	
 		sort.connectBeginEndNodes(assignmentList);
+		/*
+		 * I never know what to assert when shit be empty
+		 */
 	}
 	
-	//Assignment list is not empty
+	//Test 2: assignment list has one assignments
+	@Test 
+	public void test_one_assignment_in_list(){
+		List<Assignment> assignmentList = new ArrayList<Assignment>();
+		Assignment test = new Assignment(3);
+		assignmentList.add(test);
+		
+		sort.connectBeginEndNodes(assignmentList);
+		
+		assertEquals(test.getBeginNode().getOutgoingEdges(), test.getEndNode().getIncomingEdges());
+	}
+	
+	//Test 3: assignment list has multiple assignments
+	@Test
+	public void test_multiple_assignment_in_list(){
+		List<Assignment> assignmentList = new ArrayList<Assignment>();
+		Assignment a = new Assignment(3);
+		Assignment b = new Assignment(4);
+		Assignment c = new Assignment(2);
+		
+		assignmentList.add(a);
+		assignmentList.add(b);
+		assignmentList.add(c);
+		
+		sort.connectBeginEndNodes(assignmentList);
+		
+		assertEquals(a.getBeginNode().getOutgoingEdges(), a.getEndNode().getIncomingEdges());
+		assertEquals(b.getBeginNode().getOutgoingEdges(), b.getEndNode().getIncomingEdges());
+		assertEquals(c.getBeginNode().getOutgoingEdges(), c.getEndNode().getIncomingEdges());
+	}
 	/*
-	 * visit 
+	 * addDepedencyConnections
+	 */
+	//Test 1 dependency list has multiple
+	@Test
+	public void test_multiple_dependency(){
+		Assignment ta = new Assignment(2);
+		Assignment tb = new Assignment(3);
+		Assignment tc = new Assignment(1);
+		
+		Dependency a = new Dependency(ta, Dependency.DependencyType.BEGINBEGIN, tb);
+		Dependency b = new Dependency(tb, Dependency.DependencyType.BEGINEND, tc);
+		Dependency c = new Dependency(ta, Dependency.DependencyType.ENDEND, tc);
+		
+		List<Dependency> dependencyList = new ArrayList<Dependency>();
+		
+		dependencyList.add(a);
+		dependencyList.add(b);
+		dependencyList.add(c);
+		
+		sort.addDependencyConnections(dependencyList);
+		
+		assertEquals(ta.getBeginNode().getOutgoingEdges().get(0), tb.getBeginNode().getIncomingEdges().get(0));
+		assertEquals(tb.getBeginNode().getOutgoingEdges().get(0), tc.getEndNode().getIncomingEdges().get(0));
+		assertEquals(ta.getEndNode().getOutgoingEdges().get(0), tc.getEndNode().getIncomingEdges().get(1));
+	}
+	
+	//Test 2 dependency list has one
+	public void test_one_dependency(){
+		Assignment ta = new Assignment(2);
+		Assignment tb = new Assignment(3);
+		
+		Dependency a = new Dependency(ta, Dependency.DependencyType.BEGINBEGIN, tb);
+	
+		
+		List<Dependency> dependencyList = new ArrayList<Dependency>();
+		
+		dependencyList.add(a);
+		
+		sort.addDependencyConnections(dependencyList);
+		
+		assertEquals(ta.getBeginNode().getOutgoingEdges().get(0), tb.getBeginNode().getIncomingEdges().get(0));
+	}
+	
+	//Test 3 dependency list is empty
+	/*
+	 * Still don't know how to test empty lists tbh
 	 */
 	
 	/*
@@ -137,11 +214,94 @@ public class SortTest {
 		sort.addEdge(fromNode, toNode, 3);
 	}
 	
+	/*
+	 * sort
+	 */
+	//Test 1: node list is empty
+	@Test 
+	public void test_no_nodes(){
+		/*
+		 * HONESTLY WHAT DO I EXPECT IN EMPTY THINGS, CAN I EXPECT
+		 * NOTHING??
+		 */
+	}
+	
+	//Test 2: node list has one node and node is visited
+	@Test
+	public void test_one_visited_node() throws Exception{
+		Node a = new Node();
+		a.setVisited(true);
+		
+		sort.getNodes().add(a);
+		
+		sort.sort();
+		
+		/*
+		 * WHAT DO I ASSERT HERE TOO?
+		 */
+		assertTrue(a.isVisited());
+	}
+	
+	//Test 3: node list has one node and node is not visited
+	@Test 
+	public void test_one_not_visited_node() throws Exception{
+		Node a = new Node();
+		a.setVisited(false);
+		
+		sort.getNodes().add(a);
+		
+		sort.sort();
+		
+		assertTrue(a.isVisited());
+	}
+	
+	//Test 4: node list contains multiple nodes and one node is visited
+	@Test
+	public void test_multiple_nodes_and_one_is_visited() throws Exception{
+		Node a = new Node();
+		Node b = new Node();
+		Node c = new Node();
+		
+		a.setVisited(true);
+		b.setVisited(false);
+		c.setVisited(false);
+		
+		sort.getNodes().add(a);
+		sort.getNodes().add(b);
+		sort.getNodes().add(c);
+		
+		sort.sort();
+		
+		assertTrue(a.isVisited());
+		assertTrue(b.isVisited());
+		assertTrue(c.isVisited());
+	}
+	
+	//Test 5: node list contains multiple nodes and nodes aren't visited
+	@Test
+	public void test_multiple_nodes_and_all_nodes_not_visited() throws Exception{
+		Node a = new Node();
+		Node b = new Node();
+		Node c = new Node();
+		
+		a.setVisited(false);
+		b.setVisited(false);
+		c.setVisited(false);
+		
+		sort.getNodes().add(a);
+		sort.getNodes().add(b);
+		sort.getNodes().add(c);
+		
+		sort.sort();
+		
+		assertTrue(a.isVisited());
+		assertTrue(b.isVisited());
+		assertTrue(c.isVisited());
+	}
 	
 	/*
 	 * visit 
 	 */
-	
 	//node is visited
 	@Test 
 	public void test_visited_node() throws Exception{
@@ -163,7 +323,7 @@ public class SortTest {
 		sort.visit(node);
 	}
 	
-	//node is not visited or visiting and edges list is not empty
+	//node is not visited or visiting and edges list has one edge
 	@Test
 	public void test_has_not_visited_yet_and_has_edges() throws Exception{
 		Node firstNode = new Node();
@@ -175,6 +335,24 @@ public class SortTest {
 		
 		assertTrue(firstNode.isVisited());
 		assertTrue(secondNode.isVisited());
+	}
+	
+	//node is not visited or visiting and edges list has multiple edges
+	@Test 
+	public void test_not_visited_or_visiting_and_has_one_edge() throws Exception{
+		Node firstNode = new Node();
+		Node secondNode = new Node();
+		Node thirdNode = new Node();
+		
+		sort.addEdge(firstNode, secondNode, 0);
+		sort.addEdge(firstNode, thirdNode, 0);
+		sort.addEdge(secondNode, thirdNode, 0);
+		
+		sort.visit(firstNode);
+		
+		assertTrue(firstNode.isVisited());
+		assertTrue(secondNode.isVisited());
+		assertTrue(thirdNode.isVisited());
 	}
 	
 	//node is not visited or visiting and edges list is empty
@@ -341,7 +519,7 @@ public class SortTest {
 	}
 	//Test 8: sorted assignment nodes has one node and edges has multiple edges
 	@Test
-	public void tet_one_node_and_multiple_edge_nodes(){
+	public void test_one_node_and_multiple_edge_nodes(){
 		Node a = new Node();
 		sort.sortedAssignmentNodes().add(a);
 		
@@ -357,7 +535,46 @@ public class SortTest {
 		
 		assertEquals(a.getEndTime(), 8);
 	}
-	//Test 9: sorted assignment nodes has multiple edges and edges has multiple edges.
+	//Test 9: sorted assignment nodes has multiple nodes and edges has multiple edges.
+	@Test 
+	public void test_multiple_edges_and_multiple_nodes(){
+		Node a = new Node();
+		Node b = new Node();
+		Node c = new Node();
+		
+		sort.sortedAssignmentNodes().add(a);
+		sort.sortedAssignmentNodes().add(b);
+		sort.sortedAssignmentNodes().add(c);
+		
+		//incoming edges for b
+		Edge edgeb1 = new Edge(a, b, 5);
+		Edge edgeb2 = new Edge(a, b, 8);
+		Edge edgeb3 = new Edge(c, b, 9);
+		//incoming edges for a
+		Edge edgea1 = new Edge(b, a, 7);
+		Edge edgea2 = new Edge(c, a, 3);
+		Edge edgea3 = new Edge(c, a, 4);
+		//incoming edges for c
+		Edge edgec1 = new Edge(b, c, 2);
+		Edge edgec2 = new Edge(a, c, 3);
+		Edge edgec3 = new Edge(a, c, 1);
+		
+		b.addIncomingEdge(edgeb1);
+		b.addIncomingEdge(edgeb2);
+		b.addIncomingEdge(edgeb3);
+		a.addIncomingEdge(edgea1);
+		a.addIncomingEdge(edgea2);
+		a.addIncomingEdge(edgea3);
+		c.addIncomingEdge(edgec1);
+		c.addIncomingEdge(edgec2);
+		c.addIncomingEdge(edgec3);
+		
+		sort.setDuration();
+		
+		assertEquals(a.getEndTime(), 7);
+		assertEquals(b.getEndTime(), 15);
+		assertEquals(c.getEndTime(), 17);
+	}
 	
 	/*
 	 * addAssignmentsToGraph
