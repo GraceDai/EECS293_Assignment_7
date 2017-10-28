@@ -202,6 +202,7 @@ public class SortTest {
 	/*
 	 * findMaxDuration
 	 */
+	//Multiple nodes
 	@Test
 	public void test_when_there_are_nodes_inList() throws Exception{
 		Node testNode = new Node();
@@ -223,10 +224,26 @@ public class SortTest {
 		assertEquals(3, maxDuration);
 	}
 	
+	//One node
+	@Test public void test_one_node_in_list() throws Exception{
+		Node a = new Node();
+		Node b = null;
+		
+		thrown.expect(NullPointerException.class);
+		sort.addEdge(a, b, 3);
+		
+		sort.getNodes().add(a);
+		sort.getNodes().add(b);
+		
+		sort.sort();
+	
+		int maxDuration = sort.findMaxDuration();
+	}
+	
+	//No node
 	@Test
 	public void test_no_nodes_in_list(){
 		int maxDuration = sort.findMaxDuration();
-		
 		
 		assertEquals(0, maxDuration);		
 	}
@@ -234,6 +251,113 @@ public class SortTest {
 	/*
 	 * setDuration
 	 */
+	//Test 1: sorted assignment nodes is empty and edges is empty 
+	@Test
+	public void test_empty_lists(){
+		sort.setDuration();
+
+		//WHAT DO I ASSERT HERE????
+	}
+	
+	//Test 2: sorted assignment nodes has one node and edges is empty
+	@Test
+	public void test_one_node_and_no_edges(){
+		Node a = new Node();
+		
+		sort.sortedAssignmentNodes().add(a);
+		
+		sort.setDuration();
+		
+		assertEquals(a.getEndTime(), 0);
+	}
+	
+	//Test 3: sorted assignment nodes has multiple nodes and edges is empty
+	@Test
+	public void test_multiple_nodes_and_no_edges(){
+		Node a = new Node();
+		Node b = new Node();
+		Node c = new Node();
+		
+		sort.sortedAssignmentNodes().add(a);
+		sort.sortedAssignmentNodes().add(b);
+		sort.sortedAssignmentNodes().add(c);
+		
+		sort.setDuration();
+		
+		assertEquals(a.getEndTime(), 0);
+		assertEquals(b.getEndTime(), 0);
+		assertEquals(c.getEndTime(), 0);
+	}
+	
+	//Test 4: sorted assignment nodes is empty and edges has one edge
+	/*
+	 * HOW TO TEST IF I NEVER ENTER THE FOR LOOP 
+	 */
+	
+	//Test 5: sorted assignment nodes has one node and edges has one edge
+	@Test
+	public void test_one_node_and_one_edge(){
+		Node a = new Node();
+		sort.sortedAssignmentNodes().add(a);
+		Edge e = new Edge(a, null, 3);
+		a.addIncomingEdge(e);
+		sort.setDuration();
+		
+		assertEquals(a.getEndTime(), 3);
+	}
+	
+	//Test 6: sorted assignment nodes has multiple nodes and edges has one edge for each node
+	@Test
+	public void test_multiple_nodes_but_one_edge(){
+		Node a = new Node();
+		Node b = new Node();
+		Node c = new Node();
+		
+		sort.sortedAssignmentNodes().add(a);
+		sort.sortedAssignmentNodes().add(b);
+		sort.sortedAssignmentNodes().add(c);
+		
+		Edge ae = new Edge(a, b, 3);
+		Edge be = new Edge(b, c, 5);
+		Edge ca = new Edge(c, a, 4);
+		
+		a.addIncomingEdge(ca);
+		b.addIncomingEdge(ae);
+		c.addIncomingEdge(be);
+		
+		sort.setDuration();
+		
+		assertEquals(a.getEndTime(), 4);
+		assertEquals(b.getEndTime(), 7);
+		assertEquals(c.getEndTime(), 12);	
+	}
+	
+	//Test 7: sorted assignment nodes is empty and edges has multiple edges
+	@Test 
+	public void test_no_assignmentNodes_and_multiple_edges(){
+		/*
+		 * HOW TO TEST IF THERE'S NO NODES
+		 */
+	}
+	//Test 8: sorted assignment nodes has one node and edges has multiple edges
+	@Test
+	public void tet_one_node_and_multiple_edge_nodes(){
+		Node a = new Node();
+		sort.sortedAssignmentNodes().add(a);
+		
+		Edge ea = new Edge(a, null, 4);
+		Edge eb = new Edge(a, null, 8);
+		Edge ec = new Edge(a, null, 1);
+		
+		a.addIncomingEdge(ea);
+		a.addIncomingEdge(eb);
+		a.addIncomingEdge(ec);
+		
+		sort.setDuration();
+		
+		assertEquals(a.getEndTime(), 8);
+	}
+	//Test 9: sorted assignment nodes has multiple edges and edges has multiple edges.
 	
 	/*
 	 * addAssignmentsToGraph
