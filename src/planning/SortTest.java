@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -96,9 +97,8 @@ public class SortTest {
 		List<Assignment> assignmentList = new ArrayList<Assignment>();
 	
 		sort.connectBeginEndNodes(assignmentList);
-		/*
-		 * I never know what to assert when shit be empty
-		 */
+		
+		assertEquals(assignmentList.size(), 0);
 	}
 	
 	//Test 2: assignment list has one assignments
@@ -622,6 +622,35 @@ public class SortTest {
 		
 		assertEquals(6, sort.getNodes().size());
 	}
+	
+	
+	
+	/*
+	 * STRESS TEST 
+	 */
+	@Test 
+	public void stress_test() throws Exception{
+		Random random = new Random();
+		List<Assignment> assignmentList = new ArrayList<>();
+		List<Dependency> dependencyList = new ArrayList<>();
+		
+		for(int i = 0; i < 10000; i++){
+			Assignment assignment1 = new Assignment(random.nextInt(500));
+			Assignment assignment2 = new Assignment(random.nextInt(500));
+			assignmentList.add(assignment1);
+			
+			Dependency dependency = new Dependency(assignment1, Dependency.DependencyType.BEGINBEGIN, assignment2);
+		}
+		
+		int duration = sort.scheduleTasks(assignmentList, dependencyList);
+		assertTrue(0 <= duration && duration <= 500);
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
