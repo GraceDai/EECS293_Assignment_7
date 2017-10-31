@@ -176,9 +176,13 @@ public class SortTest {
 	}
 	
 	//Test 3 dependency list is empty
-	/*
-	 * Still don't know how to test empty lists tbh
-	 */
+	public void test_no_dependency(){
+		List<Dependency> dependencyList = new ArrayList<Dependency>();
+		
+		sort.addDependencyConnections(dependencyList);
+		
+		assertEquals(0, dependencyList.size());
+	}
 	
 	/*
 	 * addEdge 
@@ -219,11 +223,10 @@ public class SortTest {
 	 */
 	//Test 1: node list is empty
 	@Test 
-	public void test_no_nodes(){
-		/*
-		 * HONESTLY WHAT DO I EXPECT IN EMPTY THINGS, CAN I EXPECT
-		 * NOTHING??
-		 */
+	public void test_no_nodes() throws Exception{
+		sort.sort();
+		
+		assertEquals(sort.getNodes().size(), 0);
 	}
 	
 	//Test 2: node list has one node and node is visited
@@ -434,7 +437,7 @@ public class SortTest {
 	public void test_empty_lists(){
 		sort.setDuration();
 
-		//WHAT DO I ASSERT HERE????
+		assertEquals(0, sort.sortedAssignmentNodes().size());
 	}
 	
 	//Test 2: sorted assignment nodes has one node and edges is empty
@@ -469,8 +472,10 @@ public class SortTest {
 	
 	//Test 4: sorted assignment nodes is empty and edges has one edge
 	/*
-	 * HOW TO TEST IF I NEVER ENTER THE FOR LOOP 
+	 * Edges belong to nodes so if there are no nodes then there are no edges
+	 * so the test is the same as test 1 of setDuration()
 	 */
+	
 	
 	//Test 5: sorted assignment nodes has one node and edges has one edge
 	@Test
@@ -511,12 +516,10 @@ public class SortTest {
 	}
 	
 	//Test 7: sorted assignment nodes is empty and edges has multiple edges
-	@Test 
-	public void test_no_assignmentNodes_and_multiple_edges(){
-		/*
-		 * HOW TO TEST IF THERE'S NO NODES
-		 */
-	}
+	/*
+	 * Again, edges belong to nodes so if there are no nodes there is no way
+	 * to have any edges so the test is the same as test 1 of setDuration()
+	 */
 	//Test 8: sorted assignment nodes has one node and edges has multiple edges
 	@Test
 	public void test_one_node_and_multiple_edge_nodes(){
